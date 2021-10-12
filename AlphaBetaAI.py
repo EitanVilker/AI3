@@ -6,12 +6,17 @@ class AlphaBetaAI():
     def __init__(self, depth):
         self.depth = depth
         self.nodes_visited = 0
+        self.reordering = "capture"
 
     # Function that decides the next move the AI will play. 
     # Basically does the first round of minimax so that the algorithm doesn't have to pass any moves down
     def choose_move(self, board):
 
-        legal_moves = board.legal_moves
+        if self.reordering == "random":
+            legal_moves = self.randomize_legal_moves(board)
+        elif self.reordering == "capture":
+            legal_moves = self.order_moves_by_capture(board)
+
         alpha = -inf
         beta = inf
 
@@ -57,6 +62,13 @@ class AlphaBetaAI():
     # Function that gets the maximum value possible against a minimizing opponent
     def get_max(self, board, alpha=-inf, beta=inf, current_depth=0):
 
+        if self.reordering == "random":
+            legal_moves = self.randomize_legal_moves(board)
+        elif self.reordering == "capture":
+            legal_moves = self.order_moves_by_capture(board)
+        else:
+            legal_moves = board.legal_moves
+
         self.nodes_visited += 1
 
         if self.cutoff_test(board, current_depth):
@@ -78,7 +90,7 @@ class AlphaBetaAI():
         
         current_best_move = None
         max_val = -inf
-        for move in board.legal_moves:
+        for move in legal_moves:
             board.push(move)
             temp_val = self.get_min(board, alpha=alpha, beta=beta, current_depth=(current_depth+1))
             board.pop()
@@ -93,6 +105,13 @@ class AlphaBetaAI():
 
     # Function that gets the minimum value possible against a maximizing opponent
     def get_min(self, board, alpha=-inf, beta=inf, current_depth=0):
+
+        if self.reordering == "random":
+            legal_moves = self.randomize_legal_moves(board)
+        elif self.reordering == "capture":
+            legal_moves = self.order_moves_by_capture(board)
+        else:
+            legal_moves = board.legal_moves
         
         self.nodes_visited += 1
 
@@ -114,7 +133,7 @@ class AlphaBetaAI():
             return self.material_diff_heuristic(board)
         
         min_val = inf
-        for move in board.legal_moves:
+        for move in legal_moves:
             board.push(move)
             temp_val = self.get_max(board, alpha=alpha, beta=beta, current_depth=(current_depth+1))
             board.pop()
@@ -129,10 +148,20 @@ class AlphaBetaAI():
     # Function to randomize the order of the available moves
     def randomize_legal_moves(self, board):
 
+        legal_moves = list(board.legal_moves)
+        shuffle(legal_moves)
+        return legal_moves
+
+    # Function to put all capture moves at beginning of list
+    def order_moves_by_capture(self, board):
+
         reordered_moves = []
         for move in board.legal_moves:
-            reordered_moves.append(move)
-        shuffle(reordered_moves)
+            target_square = move.to_square
+            if board.piece_type_at(target_square) is not None:
+                reordered_moves.insert(0, move)
+            else:
+                reordered_moves.append(move)
         return reordered_moves
 
 

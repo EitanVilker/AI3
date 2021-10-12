@@ -12,20 +12,25 @@ from ChessGame import ChessGame
 
 import sys
 
+depth = 3
 
 player1 = HumanPlayer()
-# player2 = MinimaxAI(2)
-player2 = AlphaBetaAI(4)
-# player2 = IterativeDeepeningAI(15)
+# player1 = RandomAI()
+# player1 = MinimaxAI(1)
+# player2 = MinimaxAI(depth)
+# player2 = AlphaBetaAI(depth)
+player2 = IterativeDeepeningAI(depth)
 
 game = ChessGame(player1, player2)
 
 while not game.is_game_over():
     print(game)
     game.make_move()
-    print("\nNodes visited: " + str(player2.nodes_visited) + "\n\n")
+    print("\nNodes visited: " + str(player2.nodes_visited) + "\n")
+    player2.nodes_visited = 0
+    print("\nDepth: " + str(depth))
 
-print("gg ez game")
+print(game)
+print("\n\n\nGame over!")
 
-
-#print(hash(str(game.board)))
+# print(hash(str(game.board)))

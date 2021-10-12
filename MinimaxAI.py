@@ -16,7 +16,6 @@ class MinimaxAI():
             max_move = None
             max_move_val = -inf
             for move in legal_moves:
-                print("evaluating start move: " + str(move))
                 board.push(move)
                 temp_val = self.get_min(board)
                 board.pop()
@@ -30,7 +29,6 @@ class MinimaxAI():
         min_move = None
         min_move_val = inf
         for move in legal_moves:
-            print("evaluating start move: " + str(move))
             board.push(move)
             temp_val = self.get_max(board)
             board.pop()
@@ -54,17 +52,13 @@ class MinimaxAI():
             
             # If terminal state reached
             if board.is_game_over():
-
                 result = board.outcome()
-
                 # If draw
                 if result is None:
                     return 0
-                
                 # If black won
                 if result.winner == chess.BLACK:
                     return -inf
-                
                 # If white won
                 return inf
 
@@ -91,17 +85,13 @@ class MinimaxAI():
 
             # If terminal state reached
             if board.is_game_over():
-
                 result = board.outcome()
-
                 # If draw
                 if result is None:
                     return 0
-                
                 # If black won
                 if result.winner == chess.BLACK:
                     return -inf
-                
                 # If white won
                 return inf
 
