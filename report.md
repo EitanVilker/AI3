@@ -28,21 +28,18 @@ For all of my tests included in this document, I played d2d4, d1d3, and d3f5 as 
 | ID          |   1    |    388400     |
 | A-B+Random  |   1    |     11097     |
 | A-B+Capture |   1    |      4654     |
-
 | Minimax     |   2    |   1496445     |
 | A-B         |   2    |     15295     |
 | ID          |   2    |               |
 | A-B+Random  |   2    |     13074     |
-| A-B+Capture |   2    |      8060    |
-
-
+| A-B+Capture |   2    |      8060     |
 | Minimax     |   3    |    974162     |
 | A-B         |   3    |     11630     |
 | ID          |   3    |               |
 | A-B+Random  |   3    |     12226     |
 | A-B+Capture |   3    |      2631     |
 
-
+It is notable that using reordering produced much better results in all cases, but most particularly when the opposing player made a "blunder." In most games played against the AI, moving the queen to f5 allows it to be taken. Alpha-beta pruning plus the capture reordering causes this to be identified quickly and the vast majorit of nodes and branches to be ignored. This makes sense, as generally speaking moves that capture are likely to be more interesting and polarizing, and so are more likely to have a strong effect on the game state than a random pawn move.
 
 
 ### Responses
